@@ -1,14 +1,13 @@
 import { useRef, useState } from "react";
-import { Button, Checkbox, DatePicker, Form, FormInstance, Input, Modal, Radio } from "antd";
+import { Button, Checkbox, Form, FormInstance, Input, Modal } from "antd";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import moment from "moment";
 
 import { RegisterApiHooks } from "./api";
 import { useToast } from "@/components/Toast/ToastContext";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@/router/paths";
-import { MailOutlined, CheckCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { registerSchema, RegisterPayload } from "./api/schema";
 import { useRegisterMutation } from "./api/register-mutation";
 import { queryClient } from "@/utils/react-query";
@@ -160,7 +159,6 @@ export const Register = () => {
               </div>}
             />
           </Form.Item>
-
           <Form.Item>
             <Checkbox checked={agreement} onChange={(e) => setAgreement(e.target.checked)}>
               I agree to the Amartha <a href="#">Privacy Policy</a>.
@@ -171,7 +169,7 @@ export const Register = () => {
             <Button onClick={() => navigate(paths.loginPage)}>Sign In</Button>
             <Button
               type="primary"
-              htmlType="button"
+              htmlType="submit"
               disabled={!formState.isValid || !agreement || formState.isSubmitting}
               onClick={() => {
                 setModalConfig({

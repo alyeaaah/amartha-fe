@@ -112,6 +112,8 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
             <Button
               type="default"
               variant="outlined"
+              id="filter-button"
+              data-testid="filter-button"
               size="large"
               className="border-[#7C51A2] text-[#7C51A2] hover:!bg-[#7C51A2] hover:!text-white hover:!border-[#7C51A2]"
               onClick={() => setOpenFilter(!openFilter)}
@@ -126,6 +128,8 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
               className="w-52"
               placeholder="Sort by"
               size="large"
+              id="sort-by"
+              data-testid="sort-by"
               value={order_by}
               onChange={(value) => setQueryParams({ order_by: value })}
             />
@@ -133,6 +137,8 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
               options={[{ value: "asc", label: "Ascending" }, { value: "desc", label: "Descending" }]}
               className="min-w-24 placeholder:!text-lg"
               placeholder="Sort"
+              id="sort"
+              data-testid="sort"
               value={sort}
               size="large"
               onChange={(value) => setQueryParams({ sort: value })}

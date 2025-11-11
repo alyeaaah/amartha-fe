@@ -18,7 +18,6 @@ import { PetDetail } from "./detail";
 import Confirmation from "@/components/Modal/Confirmation";
 import { useToast } from "@/components/Toast/ToastContext";
 import { queryClient } from "@/utils/react-query";
-import { usePetQuery } from "./api/pet-queries";
 
 export const PetPage = () => {
   const navigate = useNavigate();

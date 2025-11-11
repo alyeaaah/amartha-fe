@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@ant-design/icons": "~5.6.1",
@@ -25,6 +28,7 @@
     "jotai": "^2.12.2",
     "js-cookie": "^3.0.5",
     "moment": "^2.30.1",
+    "msw": "^2.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -43,26 +47,35 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@types/crypto-js": "^4.2.2",
+    "@types/jest": "^30.0.0",
     "@types/js-cookie": "^3.0.6",
+    "@types/jsdom": "^21.1.6",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@types/react-transition-group": "^4.4.10",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.6.1",
+    "@vitest/ui": "^1.1.0",
     "autoprefixer": "^10.4.16",
     "clsx": "^2.1.0",
     "jotai-devtools": "^0.11.0",
+    "jsdom": "^27.1.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.33",
     "postcss-advanced-variables": "^3.0.1",
     "postcss-import": "^16.0.0",
     "postcss-nesting": "^12.0.2",
+    "react-intersection-observer": "^10.0.0",
     "sass-embedded": "^1.86.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.4.11"
+    "vite": "^5.4.11",
+    "vitest": "^1.1.0"
   }
 }

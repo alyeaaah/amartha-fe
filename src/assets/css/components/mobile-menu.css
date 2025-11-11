@@ -17,9 +17,6 @@
             margin-left: theme("spacing.3");
             .menu__sub-icon {
                 transition-property: theme("transitionProperty.DEFAULT");
-                transition-timing-function: theme(
-                    "transitionTimingFunction.in"
-                );
                 transition-duration: theme("transitionDuration.100");
                 margin-left: auto;
                 svg {

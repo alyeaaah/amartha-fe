@@ -33,12 +33,10 @@ export const AnimeFilterModal = ({ openFilter, onApply, onClose, filters }: Anim
       q: useDebounce(keywords, { wait: 500 }),
     }
   }, {
-    enabled: !!openFilter, select: (data) => {
-      // filter duplicate data.mal_id
-      const uniqueData = data.data.filter((item, index) => data.data.findIndex((t) => t.mal_id === item.mal_id) === index);
-      return uniqueData;
-    }
+    enabled: !!openFilter,
   });
+
+  const dataProducers = producersData?.data.filter((item, index) => producersData.data.findIndex((t) => t.mal_id === item.mal_id) === index) || []
 
   return (
     <Modal
@@ -151,7 +149,7 @@ export const AnimeFilterModal = ({ openFilter, onApply, onClose, filters }: Anim
             id="producers"
             onChange={(value) => {
               value = value.map((item) => String(item));
-              const filteredData = producersData?.filter((producer) => value.includes(String(producer.mal_id))) || [];
+              const filteredData = dataProducers?.filter((producer) => value.includes(String(producer.mal_id))) || [];
               const pickedProducers: CustomDropdownType[] = filteredData.map((producer) => ({ value: String(producer.mal_id), label: producer.name || "", title: producer.titles?.[0]?.title }));
               // concat pickedProducers with tempFilters.selectedProducers 
               const updatedProducers = [...(tempFilters.selectedProducers || []), ...pickedProducers];
@@ -169,7 +167,7 @@ export const AnimeFilterModal = ({ openFilter, onApply, onClose, filters }: Anim
             key={JSON.stringify(tempFilters.selectedProducers)}
             mode="multiple"
             loading={producersLoading}
-            options={producersData?.map((producer) => ({ value: producer.mal_id, label: producer.name, title: producer.titles?.[0]?.title }))}
+            options={dataProducers?.map((producer) => ({ value: producer.mal_id, label: producer.name, title: producer.titles?.[0]?.title }))}
             optionRender={(option) => <div key={option.value}><span className="font-semibold capitalize">{option.label}</span> <span className="text-xs text-gray-500">{option.data?.title}</span></div>}
             labelRender={(label) => <div className="capitalize">{tempFilters.selectedProducers?.find((producer) => {
               return String(producer.value) === String(label.value)
