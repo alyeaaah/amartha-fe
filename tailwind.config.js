@@ -42,7 +42,7 @@ module.exports = {
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
-        // poppins: ["Poppins", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
         // roboto: ['"Roboto"', "sans-serif"],
       },
       container: {

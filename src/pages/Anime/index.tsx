@@ -5,22 +5,21 @@ import { Badge, Button, Divider, Select, Table } from "antd";
 import { useRouteParams } from "typesafe-routes/react-router";
 import { paths } from "@/router/paths";
 import { AnimeOrderBy, AnimeRating, AnimeSearchQuery, AnimeStatus, AnimeType, SortDirection } from "./api/schema";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDebounce } from "ahooks";
 import Search from "antd/es/input/Search";
-import { EyeOutlined, FilterOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
+import { FilterOutlined } from "@ant-design/icons";
 import { orderOptions } from "@/utils/constants";
 import { AnimeFilterModal } from "./components/anime-filter.modal";
 import dayjs from "dayjs";
+import { AnimeThumbnailComponent } from "./components/anime-thumbnail.component";
 
-type AnimePageProps = {
-  className?: string;
-};
+
 export { AnimeDetailPage } from "./Detail";
-export const AnimePage = ({ className = "" }: AnimePageProps) => {
+export const AnimePage = () => {
   const navigate = useNavigate();
-  const dateFormat = 'YYYY-MM-DD';
   const queryParams = useRouteParams(paths.animePage.index);
+  const dateFormat = 'YYYY-MM-DD';
   const {
     limit,
     page,
@@ -74,7 +73,7 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
   }, { enabled: true });
   const countFilters = Object.values(queryParams).filter((value) => value !== undefined).length;
   return (
-    <section className={`container mx-auto p-4 lg:px-8 ${className}`}>
+    <section className={`container mx-auto p-4 lg:px-8`}>
       <header className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight text-gray-900">
           Anime Archives
@@ -85,8 +84,14 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
       </header>
       {/* Mission & Vision */}
       <div className="grid grid-cols-12">
-        <div className="col-span-12">
+        <div className="col-span-12 relative my-6">
+          <div className="absolute bg-white border-[#7C51A2] border-2  rounded-lg -top-4 -left-4 h-fit z-10">
+            <div className="flex flex-col items-center justify-center h-full overflow-hidden">
+              <h2 className="px-2 py-1 text-2xl font-light text-[#7C51A2] !font-poppins  drop-shadow-[0_0_1px_rgba(124,81,162,1)] text-end flex flex-col">Popular Anime</h2>
+            </div>
+          </div>
           <CarouselThumbnailComponent
+            className="border-2 border-[#7C51A2] shadow-[0_0_24px_rgba(124,81,162,1)_inset]  rounded-xl"
             slideshow={{
               autoplay: true,
               slidesToShow: 10,
@@ -102,7 +107,7 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
             <div className="flex-1">
               <Search
                 placeholder="Search anime"
-                className="rounded-lg border !border-[#7C51A2]"
+                className="rounded-lg border !border-[#7C51A2] z-20 relative"
                 onChange={(e) => setQueryParams({ q: e.target.value })}
                 size="large"
                 value={q}
@@ -153,34 +158,7 @@ export const AnimePage = ({ className = "" }: AnimePageProps) => {
                 dataIndex: "mal_id",
                 key: "mal_id",
                 render: (text, record) => (
-                  <Link to={paths.animePage.detail({ id: record.mal_id.toString() }).$} className="group flex flex-col h-full hover:scale-105 transition-all duration-300 hover:shadow-xl rounded-lg">
-                    <div className="relative aspect-[3/4] !overflow-hidden rounded-lg block border border-[#7C51A2]">
-                      <img
-                        src={record.images.jpg.image_url || ""}
-                        alt={record.title}
-                        className="!w-full !h-full flex-1 object-cover !overflow-hidden rounded-lg "
-                        width={100}
-                        height={100}
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/600x400";
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-row items-center justify-between text-xs rounded-b-lg bg-[#7C51A2] text-white px-2 py-1 pt-3 -mt-2">
-                      <div className="flex flex-row items-center gap-1">
-                        <SafetyCertificateOutlined />
-                        <span>{record.rating}</span>
-                      </div>
-                      <div className="flex flex-row items-center gap-1">
-                        <EyeOutlined />
-                        <span>{Intl.NumberFormat().format(record.popularity || 0)}</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-col flex-1 -mt-2 pt-4 group-hover:bg-[#7C51A217] p-2 rounded-b-lg hover:bg-opacity-10">
-                      <div className="font-semibold line-clamp-2 group-hover:text-[#7C51A2]">{record.title}</div>
-                      <div className="text-xs text-gray-500 line-clamp-2">{record.synopsis}</div>
-                    </div>
-                  </Link>
+                  <AnimeThumbnailComponent anime={record} />
                 ),
               },
             ]}

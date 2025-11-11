@@ -1,0 +1,65 @@
+# Docker Compose configuration for local development and production deployment
+
+version: "3.8"
+
+services:
+  # Main application service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zau-amartha-app
+    ports:
+      - "3000:3000"
+
+    # Environment variables
+    environment:
+      - VITE_API_BASE_URL=https://petstore3.swagger.io/api/v3/
+      - VITE_JIKAN_BASE_URL=https://api.jikan.moe/v4/
+      - VITE_SECRET_KEY=AsY0uW1sh0rCu5t0m4b1e
+      - VITE_AUTH_COOKIE_NAME=@martha
+      - VITE_BASENAME=/
+      - NODE_ENV=production
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+
+    # Restart policy
+    restart: unless-stopped
+
+    # Health check
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Optional: Reverse proxy with Nginx for production
+  # Uncomment if you want to add nginx reverse proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: zau-amartha-nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - app
+  #   restart: unless-stopped

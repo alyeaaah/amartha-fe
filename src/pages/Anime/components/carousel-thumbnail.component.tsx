@@ -7,6 +7,7 @@ interface CarouselThumbnailComponentProps {
   bordered?: boolean;
   isLoading?: boolean;
   action?: React.ReactNode;
+  className?: string;
   animeList: Anime[];
   title?: string;
   subtitle?: string;
@@ -18,8 +19,8 @@ interface CarouselThumbnailComponentProps {
     arrows?: boolean;
   }
 }
-export const CarouselThumbnailComponent = ({ action, animeList, title, subtitle, slideshow, bordered, isLoading }: CarouselThumbnailComponentProps) => {
-  return (<div className={`col-span-12 w-full overflow-visible ${bordered ? 'border border-[#7C51A2] p-4 rounded-2xl' : ''}`}>
+export const CarouselThumbnailComponent = ({ action, animeList, title, subtitle, slideshow, bordered, isLoading, className }: CarouselThumbnailComponentProps) => {
+  return (<div className={`col-span-12 w-full overflow-visible ${bordered ? 'border border-[#7C51A2] p-4 rounded-2xl' : ''} ${className}`}>
     {title && <div className='w-full mb-4 flex flex-row gap-2 justify-between'>
       <div>
         <h2 className='text-2xl font-bold text-[#7C51A2]'>{title}</h2>
