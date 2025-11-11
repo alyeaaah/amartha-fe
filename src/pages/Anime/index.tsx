@@ -13,11 +13,25 @@ import { orderOptions } from "@/utils/constants";
 import { AnimeFilterModal } from "./components/anime-filter.modal";
 import dayjs from "dayjs";
 import { AnimeThumbnailComponent } from "./components/anime-thumbnail.component";
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 
 export { AnimeDetailPage } from "./Detail";
 export const AnimePage = () => {
   const navigate = useNavigate();
+  const breakpoint = useBreakpoint();
+  const slidesToShow: number = (() => {
+    switch (true) {
+      case breakpoint.lg:
+        return 10;
+      case breakpoint.md:
+        return 6;
+      case breakpoint.sm:
+        return 3;
+      default:
+        return 3;
+    }
+  })()
   const queryParams = useRouteParams(paths.animePage.index);
   const dateFormat = 'YYYY-MM-DD';
   const {
@@ -85,7 +99,7 @@ export const AnimePage = () => {
       {/* Mission & Vision */}
       <div className="grid grid-cols-12">
         <div className="col-span-12 relative my-6">
-          <div className="absolute bg-white border-[#7C51A2] border-2  rounded-lg -top-4 -left-4 h-fit z-10">
+          <div className="absolute bg-white border-[#7C51A2] border-2  rounded-lg lg:-top-4 lg:-left-4 top-0 left-0 h-fit z-10">
             <div className="flex flex-col items-center justify-center h-full overflow-hidden">
               <h2 className="px-2 py-1 text-2xl font-light text-[#7C51A2] !font-poppins  drop-shadow-[0_0_1px_rgba(124,81,162,1)] text-end flex flex-col">Popular Anime</h2>
             </div>
@@ -94,7 +108,7 @@ export const AnimePage = () => {
             className="border-2 border-[#7C51A2] shadow-[0_0_24px_rgba(124,81,162,1)_inset]  rounded-xl"
             slideshow={{
               autoplay: true,
-              slidesToShow: 10,
+              slidesToShow: slidesToShow,
               slidesToScroll: 1,
               dots: false,
               arrows: true,

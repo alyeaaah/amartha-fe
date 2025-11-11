@@ -1,6 +1,6 @@
 import { IconLogo } from '@/assets/images/icons';
 import LayoutWrapper from '@/components/LayoutWrapper';
-import { Divider, Layout, Button, Carousel, Image } from 'antd';
+import { Divider, Layout, Button, Carousel, Image, Grid } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -8,6 +8,7 @@ import { PublicHeader } from '@/components/Header';
 import { paths } from '@/router/paths';
 import { AnimeApiHooks } from '@/pages/Anime/api';
 import { CarouselThumbnailComponent } from '@/pages/Anime/components/carousel-thumbnail.component';
+import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 
 const { Header, Content } = Layout;
 
@@ -15,6 +16,19 @@ const { Header, Content } = Layout;
 export const LandingPage = () => {
   const navigate = useNavigate();
   const [animateMenu, setAnimateMenu] = useState(-1);
+  const breakpoint = useBreakpoint();
+  const slidesToShow: number = (() => {
+    switch (true) {
+      case breakpoint.lg:
+        return 6;
+      case breakpoint.md:
+        return 4;
+      case breakpoint.sm:
+        return 2;
+      default:
+        return 1;
+    }
+  })()
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -71,7 +85,7 @@ export const LandingPage = () => {
           animeList={topAnimeList?.data || []}
           slideshow={{
             autoplay: true,
-            slidesToShow: 6,
+            slidesToShow: slidesToShow,
             slidesToScroll: 1,
             dots: true,
             arrows: false,

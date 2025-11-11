@@ -1,17 +1,30 @@
 import React from 'react';
 import { Card, Tag, Statistic, Row, Col, Skeleton } from 'antd';
-import { StarOutlined, TrophyOutlined, TeamOutlined, UsergroupAddOutlined, MonitorOutlined, DesktopOutlined } from '@ant-design/icons';
+import { StarOutlined, TrophyOutlined, TeamOutlined, UsergroupAddOutlined, DesktopOutlined } from '@ant-design/icons';
 import { useRouteParams } from 'typesafe-routes/react-router';
 import { paths } from '@/router/paths';
 import { AnimeApiHooks } from '../api';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LayoutWrapper from '@/components/LayoutWrapper';
 import { CarouselThumbnailMiniComponent } from '../components/carousel-thumbnail-mini.component';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 
 
 export const AnimeDetailPage: React.FC = () => {
-  const navigate = useNavigate();
+  const breakpoint = useBreakpoint();
+  const slidesToShow: number = (() => {
+    switch (true) {
+      case breakpoint.lg:
+        return 10;
+      case breakpoint.md:
+        return 6;
+      case breakpoint.sm:
+        return 3;
+      default:
+        return 3;
+    }
+  })()
   const { id } = useRouteParams(paths.animePage.detail);
   const { data: animeData, isLoading: animeLoading } = AnimeApiHooks.useGetAnimeDetail({
     params: {
@@ -268,14 +281,14 @@ export const AnimeDetailPage: React.FC = () => {
                       {relationName}: {anime.name}
                     </Link>
                   ))
-                })}
+                }) || "No related anime"}
               </div>
             </Card>
           </Col>
         </Row>
         <Row>
           <Col xs={24} lg={24} className='px-6 mt-6'>
-            <CarouselThumbnailMiniComponent
+            {(!recommendationsLoading && recommendationsData && recommendationsData?.length > 0) && <CarouselThumbnailMiniComponent
               animeList={recommendationsData?.map((anime) => ({
                 id: anime.entry.mal_id,
                 title: anime.entry.title,
@@ -284,9 +297,9 @@ export const AnimeDetailPage: React.FC = () => {
               title='Recommendation'
               slideshow={{
                 slidesToScroll: 1,
-                slidesToShow: 10
+                slidesToShow: slidesToShow,
               }}
-            />
+            />}
           </Col>
         </Row>
       </LayoutWrapper>
