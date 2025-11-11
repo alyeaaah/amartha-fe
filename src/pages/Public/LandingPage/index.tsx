@@ -21,7 +21,7 @@ export const LandingPage = () => {
     triggerOnce: false,
 
   });
-  const { data: topAnimeList } = AnimeApiHooks.useGetAnimeTop({
+  const { data: topAnimeList, isLoading: topAnimeLoading } = AnimeApiHooks.useGetAnimeTop({
     queries: {
       limit: 24,
     }
@@ -33,15 +33,7 @@ export const LandingPage = () => {
     <>
       {/* <PageHeader /> */}
       <PublicHeader />
-      {/* <PublicHeader
-        className={`rounded-b-2xl shadow-xl fixed -translate-y-[100px] top-0 w-full z-20 ${inView === true && animateMenu === true
-          ? 'animate-slide-out-top'
-          : inView === false && animateMenu === true
-            ? 'fixed animate-slide-in-top'
-            : ''
-          }`}
-      /> */}
-      <PublicHeader key={inView ? 'inView' : 'notInView'} className={`rounded-b-2xl shadow-xl fixed -top-[100px] w-full z-20 ${inView === true && animateMenu > 1 ? `animate-slide-out-top` : (inView === false && animateMenu > 1 ? `fixed animate-slide-in-top ` : '')}`} />
+      <PublicHeader key={inView ? 'inView' : 'notInView'} className={`rounded-b-2xl fixed top-[-90px] w-full z-20 ${inView === true && animateMenu > 1 ? `animate-slide-out-top` : (inView === false && animateMenu > 1 ? `fixed animate-slide-in-top ` : '')}`} />
 
       <div className='h-[20vh] w-full bg-[linear-gradient(to_right,#38144E,#92599D)] mb-6 relative rounded-b-[48px] shadow-xl overflow-hidden'>
 
@@ -63,6 +55,7 @@ export const LandingPage = () => {
       {/* BEGIN: First Section */}
       <LayoutWrapper className='w-full max-w-full grid grid-cols-12 gap-2 sm:gap-8 overflow-hidden'>
         <CarouselThumbnailComponent
+          isLoading={topAnimeLoading}
           bordered
           title="Top Anime"
           subtitle="Our curated list of top anime"

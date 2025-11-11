@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Tag, Statistic, Row, Col } from 'antd';
+import { Card, Tag, Statistic, Row, Col, Skeleton } from 'antd';
 import { StarOutlined, TrophyOutlined, TeamOutlined, UsergroupAddOutlined, MonitorOutlined, DesktopOutlined } from '@ant-design/icons';
 import { useRouteParams } from 'typesafe-routes/react-router';
 import { paths } from '@/router/paths';
@@ -13,7 +13,7 @@ import { CarouselThumbnailMiniComponent } from '../components/carousel-thumbnail
 export const AnimeDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useRouteParams(paths.animePage.detail);
-  const { data: animeData } = AnimeApiHooks.useGetAnimeDetail({
+  const { data: animeData, isLoading: animeLoading } = AnimeApiHooks.useGetAnimeDetail({
     params: {
       id: id,
     },
@@ -21,7 +21,7 @@ export const AnimeDetailPage: React.FC = () => {
     enabled: !!id,
     select: (data) => data.data
   });
-  const { data: relatedData } = AnimeApiHooks.useGetAnimeRelated({
+  const { data: relatedData, isLoading: relatedLoading } = AnimeApiHooks.useGetAnimeRelated({
     params: {
       id: id,
     },
@@ -29,7 +29,7 @@ export const AnimeDetailPage: React.FC = () => {
     enabled: !!id,
     select: (data) => data.data
   });
-  const { data: recommendationsData } = AnimeApiHooks.useGetAnimeRecommendations({
+  const { data: recommendationsData, isLoading: recommendationsLoading } = AnimeApiHooks.useGetAnimeRecommendations({
     params: {
       id: id,
     },
@@ -49,39 +49,61 @@ export const AnimeDetailPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-white/20 to-white" />
         </div>
         <LayoutWrapper>
-          <div className="relative mx-auto p-6 h-full flex items-end justify-end rounded-t-3xl bg-opacity-50 bg-dark">
+          <div className="relative mx-auto p-6 h-full flex items-end justify-end rounded-t-3xl bg-opacity-50 bg-dark backdrop-blur-sm mt-6">
             <div className="flex gap-6 w-full flex-col lg:flex-row">
-              <img
-                src={animeData?.images.jpg.large_image_url || ""}
-                alt={animeData?.title || ""}
-                className="w-full lg:w-56 object-cover rounded-lg shadow-2xl ring-2 ring-white/10"
-              />
+              {animeLoading &&
+                <Skeleton.Image active style={{ width: "224px", height: "100%", aspectRatio: "3/4" }} />
+              }
+              {!animeLoading &&
+                <img
+                  src={animeData?.images.jpg.large_image_url || ""}
+                  alt={animeData?.title || ""}
+                  className="w-full lg:w-56 h-full object-cover rounded-lg shadow-2xl ring-2 ring-white/10"
+                />
+              }
               <div className="flex-1 pb-4 flex flex-col justify-end">
-                <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-xl">
-                  {animeData?.title}
-                </h1>
-                <p className="text-lg text-white font-bold drop-shadow-[0_0_2px_rgba(0,0,0,0.7)] opacity-60 mb-4">{animeData?.title_japanese}</p>
-                <div className="flex gap-1 flex-wrap">
-                  {animeData?.genres?.map((genre) => (
-                    <Tag key={genre.name} className="bg-white/10 border-white/20 text-white">
-                      {genre.name}
-                    </Tag>
-                  ))}
-                </div>
-                <div className="flex flex-col mt-4 gap-0">
-                  <span>Produced by:</span>
-                  <div className='flex flex-wrap gap-1 mt-1'>
-                    {animeData?.producers?.map((producer) => (
-                      <Tag key={producer.name} className="bg-[#7C51A2]/90 border-[#7C51A2]/90 text-white">
-                        {producer.name}
+                {!animeLoading && <>
+                  <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-xl">
+                    {animeData?.title}
+                  </h1>
+                  <p className="text-lg text-white font-bold drop-shadow-[0_0_2px_rgba(0,0,0,0.7)] opacity-60 mb-4">{animeData?.title_japanese}</p>
+                  <div className="flex gap-1 flex-wrap">
+                    {animeData?.genres?.map((genre) => (
+                      <Tag key={genre.name} className="bg-white/10 border-white/20 text-white">
+                        {genre.name}
                       </Tag>
                     ))}
                   </div>
+                  <div className="flex flex-col mt-4 gap-0">
+                    <span>Produced by:</span>
+                    <div className='flex flex-wrap gap-1 mt-1'>
+                      {animeData?.producers?.map((producer) => (
+                        <Tag key={producer.name} className="bg-[#7C51A2]/90 border-[#7C51A2]/90 text-white">
+                          {producer.name}
+                        </Tag>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex gap-1 flex-wrap mt-2">
+                    Themes:&nbsp;
+                    {animeData?.themes?.map((theme) => theme.name)?.join(', ')}
+                  </div>
+                </>
+                }
+                {animeLoading && <div className='flex flex-col gap-2'>
+                  <h1 className="text-4xl font-bold mb-2 text-white drop-shadow-xl">
+                    <Skeleton.Node active style={{ width: "320px", height: "32px" }} />
+                  </h1>
+                  <Skeleton.Node active style={{ width: "180px", height: "28px" }} />
+                  <div className='flex gap-2'>
+                    <Skeleton.Node active style={{ width: "180px", height: "18px" }} />
+                    <Skeleton.Node active style={{ width: "120px", height: "18px" }} />
+                    <Skeleton.Node active style={{ width: "160px", height: "18px" }} />
+                  </div>
+                  <Skeleton.Node active style={{ width: "220px", height: "18px" }} />
+                  <Skeleton.Node active style={{ width: "420px", height: "18px" }} />
                 </div>
-                <div className="flex gap-1 flex-wrap mt-2">
-                  Themes:&nbsp;
-                  {animeData?.themes?.map((theme) => theme.name)?.join(', ')}
-                </div>
+                }
               </div>
             </div>
           </div>
@@ -91,7 +113,7 @@ export const AnimeDetailPage: React.FC = () => {
       {/* Main Content */}
       <LayoutWrapper>
         {/* Statistics Row */}
-        <Row gutter={[16, 16]} className="my-8 !mx-4">
+        {!animeLoading && <Row gutter={[16, 16]} className="my-8 !mx-4">
           <Col xs={24} sm={12} md={6}>
             <Card className="bg-slate-800/80 border-slate-700 backdrop-blur relative rounded-2xl">
               <Statistic
@@ -133,18 +155,30 @@ export const AnimeDetailPage: React.FC = () => {
             </Card>
           </Col>
         </Row>
+        }
+        {
+          animeLoading && <div className="grid grid-cols-12 gap-2 lg:gap-6 p-6">
+            <Skeleton.Node className='col-span-3 !rounded-2xl !h-[110px] !w-full' active />
+            <Skeleton.Node className='col-span-3 !rounded-2xl !h-[110px] !w-full' active />
+            <Skeleton.Node className='col-span-3 !rounded-2xl !h-[110px] !w-full' active />
+            <Skeleton.Node className='col-span-3 !rounded-2xl !h-[110px] !w-full' active />
+          </div>
+        }
 
         {/* Synopsis */}
-        <Card className=" border-[#7C51A2] backdrop-blur mb-6 !mx-6 rounded-2xl">
+        <Card className=" border-[#7C51A2] backdrop-blur mb-6 !mx-6 rounded-2xl flex flex-col">
           <h2 className="text-2xl font-semibold mb-4 text-[#7C51A2]">Synopsis</h2>
-          <p className="text-gray-800 leading-relaxed">{animeData?.synopsis}</p>
+          {animeLoading && <div className='w-full h-24 flex-1'>
+            <Skeleton paragraph={{ rows: 3, width: "100%", style: { height: "14px", width: "100%" } }} title={false} active />
+          </div>}
+          {!animeLoading && <p className="text-gray-800 leading-relaxed">{animeData?.synopsis}</p>}
         </Card>
 
         {/* Background */}
         {animeData?.background && (
           <Card className=" border-[#7C51A2] backdrop-blur mb-6 !mx-6 rounded-2xl">
             <h2 className="text-2xl font-semibold mb-4 text-[#7C51A2]">Background</h2>
-            <p className="text-gray-800 leading-relaxed">{animeData?.background}</p>
+            {!animeLoading && <p className="text-gray-800 leading-relaxed">{animeData?.background}</p>}
           </Card>
         )}
 
@@ -153,7 +187,11 @@ export const AnimeDetailPage: React.FC = () => {
           <Col xs={24} lg={8}>
             <Card className="bg-gradient-to-r from-[#401A55] to-[#693979] backdrop-blur rounded-2xl h-full">
               <h2 className="text-xl font-semibold mb-4 text-white">Information</h2>
-              <div className="space-y-0">
+
+              {animeLoading && <div className='w-full h-24 flex-1'>
+                <Skeleton paragraph={{ rows: 8, width: "100%", style: { height: "14px", width: "100%" } }} title={false} active />
+              </div>}
+              {!animeLoading && <div className="space-y-0">
                 <InfoRow label="Type" value={animeData?.type || "Movie"} />
                 <InfoRow label="Episodes" value={animeData?.episodes} />
                 <InfoRow label="Status" value={animeData?.status} />
@@ -169,7 +207,7 @@ export const AnimeDetailPage: React.FC = () => {
                 <InfoRow label="Source" value={animeData?.source} />
                 <InfoRow label="Duration" value={animeData?.duration} />
                 <InfoRow label="Rating" value={animeData?.rating} />
-              </div>
+              </div>}
             </Card>
           </Col>
 

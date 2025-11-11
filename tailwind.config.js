@@ -79,10 +79,10 @@ module.exports = {
       keyframes: {
         "slide-in-top": {
           "0%": { transform: "translateY(00px)", opacity: "0" },
-          "100%": { transform: "translateY(100px)", opacity: "1" },
+          "100%": { transform: "translateY(90px)", opacity: "1" },
         },
         "slide-out-top": {
-          "0%": { transform: "translateY(100px)", opacity: "1" },
+          "0%": { transform: "translateY(90px)", opacity: "1" },
           "100%": { transform: "translateY(00px)", opacity: "0" },
         },
       },
