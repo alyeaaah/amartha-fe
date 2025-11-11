@@ -15,6 +15,8 @@ export const AnimeApiClient = new Zodios(
     endpoints.animeDetailApi,
     endpoints.animeGenresApi,
     endpoints.animeProducersApi,
+    endpoints.animeRelatedApi,
+    endpoints.animeRecommendationsApi,
   ],
   { validate: true, axiosInstance: createAxiosInstance() },
 );

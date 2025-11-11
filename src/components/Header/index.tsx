@@ -45,7 +45,7 @@ export const PublicHeader = ({ className, innerClassName }: LandingPageProps) =>
     navigate(paths.administrator.dashboard);
   }
   return (
-    <Header className={`bg-[linear-gradient(to_right,#38144E,#92599D)] flex flex-col items-center h-24 ${className}`}>
+    <Header className={`bg-[linear-gradient(to_right,#38144E,#92599D)] fixed top-0 z-20 right-0 left-0 flex flex-col items-center h-24 ${className}`}>
       <LayoutWrapper className='h-full'>
         <div className={`border-white rounded-xl flex justify-between items-center h-full w-full px-4 ${innerClassName}`}>
           <Link to={paths.landingPage}>

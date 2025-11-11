@@ -67,14 +67,17 @@ export const genreSchema = z.object({
 });
 export type Genre = z.infer<typeof genreSchema>;
 
+export const imagesSchema = z.object({
+  jpg: imageSetSchema,
+  webp: imageSetSchema,
+});
+export type Images = z.infer<typeof imagesSchema>;
+
 // 📺 Anime Item
 export const animeSchema = z.object({
   mal_id: z.number(),
   url: z.string().url(),
-  images: z.object({
-    jpg: imageSetSchema,
-    webp: imageSetSchema,
-  }),
+  images: imagesSchema,
   trailer: trailerSchema,
   title: z.string(),
   title_english: z.string().nullish(),
@@ -100,6 +103,36 @@ export const animeSchema = z.object({
   genres: z.array(genreSchema).nullish(),
 });
 export type Anime = z.infer<typeof animeSchema>;
+
+export const animeDetailSchema = animeSchema.extend({
+  titles:z.array(z.object({
+    type:z.string(),
+    title:z.string(),
+  })).nullish(),
+  broadcast: z.object({
+    day:z.string().nullish(),
+    time:z.string().nullish(),
+    timezone:z.string().nullish(),
+    string:z.string().nullish(),
+  }).nullish(),
+  licensors: z.array(genreSchema.extend({
+    type: z.string().nullish(),
+    url: z.string().url().nullish(),
+  })).nullish(),
+  studios: z.array(genreSchema.extend({
+    type: z.string().nullish(),
+    url: z.string().url().nullish(),
+  })).nullish(),
+  producers: z.array(genreSchema.extend({
+    type: z.string().nullish(),
+    url: z.string().url().nullish(),
+  })).nullish(),
+  themes: z.array(genreSchema.extend({
+    type: z.string().nullish(),
+    url: z.string().url().nullish(),
+  })).nullish(),
+})
+export type AnimeDetail = z.infer<typeof animeDetailSchema>
 
 // 📑 Pagination
 export const paginationSchema = z.object({

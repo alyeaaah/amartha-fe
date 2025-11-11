@@ -17,10 +17,7 @@ export const FooterComponent = ({ className }: HTMLProps<HTMLDivElement>) => {
       <LayoutWrapper className="grid grid-cols-12 gap-6 w-full ">
         <div className="col-span-12 sm:col-span-6 lg:col-span-4">
           <div className="flex flex-row items-center justify-start">
-            <IconLogo className='h-16 w-24 ' />
-          </div>
-          <div className="flex flex-row items-center justify-start text-xl font-semibold">
-            Amartha
+            <IconLogo className='h-12 w-32 ' />
           </div>
           <div className='flex flex-col items-start justify-start my-2'>
             <div className='text-sm font-light pr-4'>Whether you're a competitive player, a weekend enthusiast, or just getting started, <span className='font-semibold'>Amartha</span> is your place to play, improve, and connect. Enjoy expert coaching, friendly matches, and a vibrant community</div>
@@ -34,7 +31,7 @@ export const FooterComponent = ({ className }: HTMLProps<HTMLDivElement>) => {
             </div>
           </div>
         </div>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-4 relative">
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 relative pt-4">
           <div className="flex flex-row items-center justify-start text-[#fff] font-medium pb-1">
             Sitemaps
           </div>
@@ -53,7 +50,7 @@ export const FooterComponent = ({ className }: HTMLProps<HTMLDivElement>) => {
             </ul>
           </div>
         </div>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-4">
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 pt-4">
           <div className="flex flex-row items-center justify-start text-[#fff] font-medium pb-1">
             Social Media
           </div>

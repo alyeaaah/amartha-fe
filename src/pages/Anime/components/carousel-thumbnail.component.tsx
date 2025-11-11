@@ -1,6 +1,8 @@
 import { Carousel, Image } from "antd";
 import { Anime } from "../api/schema";
 import { EyeFilled, StarFilled } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { paths } from "@/router/paths";
 interface CarouselThumbnailComponentProps {
   bordered?: boolean;
   action?: React.ReactNode;
@@ -33,7 +35,7 @@ export const CarouselThumbnailComponent = ({ action, animeList, title, subtitle,
       arrows={slideshow?.arrows || false}
     >
       {animeList?.map((anime, index) => (
-        <div key={index} className='px-2 flex flex-col gap-2 cursor-pointer hover:scale-110 transition-all duration-500 m-4'>
+        <Link key={index} to={paths.animePage.detail({ id: String(anime.mal_id) }).$} className='px-2 flex flex-col gap-2 cursor-pointer hover:scale-110 transition-all duration-500 m-4'>
           <div className='rounded-2xl overflow-hidden aspect-[3/4] flex relative group'>
             <Image src={anime.images.webp.image_url || ''} alt={anime.title} className='!w-full !h-full !flex !object-cover' preview={false} />
             <div className='absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10 group-hover:opacity-0 transition-all duration-300'></div>
@@ -70,7 +72,7 @@ export const CarouselThumbnailComponent = ({ action, animeList, title, subtitle,
               </div>
             </h2>
           </div>}
-        </div>
+        </Link>
       ))}
     </Carousel>
   </div >

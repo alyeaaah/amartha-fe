@@ -1,7 +1,7 @@
 
 import { makeEndpoint, parametersBuilder } from "@zodios/core";
 import { z } from "zod";
-import { animeSchema, paginationSchema, animeSearchQueryObjectSchema, imageSetSchema } from "./schema";
+import { animeSchema, paginationSchema, animeSearchQueryObjectSchema, imageSetSchema, animeDetailSchema, genreSchema, imagesSchema } from "./schema";
 
 const animeListApi = makeEndpoint({
   alias: "getAnimeList",
@@ -33,9 +33,10 @@ const animeDetailApi = makeEndpoint({
   method: "get",
   path: `/anime/:id`,
   response: z.object({
-    data: animeSchema,
+    data: animeDetailSchema,
   })
 });
+
 const animeGenresApi = makeEndpoint({
   alias: "getAnimeGenres",
   method: "get",
@@ -49,6 +50,7 @@ const animeGenresApi = makeEndpoint({
     }))
   })
 });
+
 const animeProducersApi = makeEndpoint({
   alias: "getAnimeProducers",
   method: "get",
@@ -71,10 +73,45 @@ const animeProducersApi = makeEndpoint({
   })
 });
 
+const animeRelatedApi = makeEndpoint({
+  alias: "getAnimeRelated",
+  method: "get",
+  path: `/anime/:id/relations`,
+  response: z.object({
+    data: z.array(z.object({
+      relation:z.string(),
+      entry: z.array(genreSchema.extend({
+        type: z.string().nullish(),
+        images: imagesSchema.nullish(),
+        url: z.string().url().nullish(),
+      })),
+    }))
+  })
+});
+
+const animeRecommendationsApi = makeEndpoint({
+  alias: "getAnimeRecommendations",
+  method: "get",
+  path: `/anime/:id/recommendations`,
+  response: z.object({
+    data: z.array(  z.object({
+      entry: genreSchema.extend({
+        type: z.string().nullish(),
+        title: z.string(),
+        name:z.string().nullish(),
+        images: imagesSchema.nullish(),
+        url: z.string().url().nullish(),
+      }),
+    }))
+  })
+});
+
 export const endpoints = {
   animeListApi,
   animeTopApi,
   animeGenresApi,
   animeProducersApi,
   animeDetailApi,
+  animeRelatedApi,
+  animeRecommendationsApi,
 };
